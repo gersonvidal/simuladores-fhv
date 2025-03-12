@@ -2,6 +2,7 @@
   "name": "hardware-simulation",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,5 +17,8 @@
     "url": "https://github.com/gersonvidal/simuladores-fhv/issues"
   },
   "homepage": "https://github.com/gersonvidal/simuladores-fhv#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  }
 }

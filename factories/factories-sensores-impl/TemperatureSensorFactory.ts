@@ -1,10 +1,14 @@
 import { DeviceFactory } from "../DeviceFactory";
 import { TemperatureSensor } from "../../sensores/sensor-temperatura/TemperatureSensor";
 import { ISensor } from "../../interfaces/ISensor";
+import { IMQTTClient } from "../../interfaces/IMQTTClient";
 
 class TemperatureSensorFactory extends DeviceFactory<ISensor> {
+  constructor(private mqttClient: IMQTTClient) {
+    super();
+  }
+
   createDevice(): ISensor {
-    // TODO: Pasar instancia de cliente MQTT al constructor
-    return new TemperatureSensor();
+    return new TemperatureSensor(this.mqttClient); // Pasa el cliente MQTT
   }
 }
