@@ -1,7 +1,7 @@
-import { SprinklerActuator } from "./services/invernadero/actuators/SprinklerActuator";
-import { LightActuator } from "./services/invernadero/actuators/LightActuator";
-import { WaterPumpActuator } from "./services/invernadero/actuators/WaterPumpActuator";
-import { NotificationActuator } from "./services/invernadero/actuators/NotificationActuator";
+import { SprinklerActuator } from "../actuadores/actuador-aspersores/SprinklerActuator";
+import { LightActuator } from "../actuadores/actuador-lamparas/LightActuator";
+import { WaterPumpActuator } from "../actuadores/actuador-bomba-de-agua/WaterPumpActuator";
+import { NotificationActuator } from "../actuadores/actuador-notificaciones/NotificationActuator";
 
 // Simulación de un cliente MQTT (reemplar después por el real)
 const mqttClient = {

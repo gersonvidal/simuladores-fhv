@@ -1,13 +1,20 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "module": "commonjs",
+    "module": "ESNext",
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@interfaces/*": ["interfaces/*"],
+      "@actuadores/*": ["actuadores/*"],
+      "@factories/*": ["factories/*"],
+      "@sensores/*": ["sensores/*"]
+    }
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*", "main.ts", "interfaces/**/*", "actuadores/**/*", "sensores/**/*"],
   "exclude": ["node_modules"]
 }

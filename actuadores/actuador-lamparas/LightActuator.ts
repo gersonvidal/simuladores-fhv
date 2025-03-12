@@ -1,5 +1,5 @@
 
-import { IActuator } from "../interfaces/IActuator";
+import { IActuator } from "../../interfaces/IActuator";
 
 export class LightActuator implements IActuator {
     private topic: string = "actuators/light";
