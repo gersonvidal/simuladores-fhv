@@ -1,3 +1,5 @@
-export abstract class DeviceFactory<T> {
-    abstract createDevice(): T;
+import { Device } from "../core/device/Device";
+
+export interface DeviceFactory<T extends Device> {
+    createDevice(greenhouseId: string): T;
 }
