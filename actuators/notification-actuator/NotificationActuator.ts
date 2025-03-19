@@ -1,16 +1,15 @@
+// actuators/notification-actuator/NotificationActuator.ts
+import { Actuator } from "../Actuator.js";
+import { IMqttClient } from "../../core/mqtt/IMqttClient";
 
-import { IActuator } from "../../interfaces/IActuator";
-
-export class NotificationActuator implements IActuator {
-    private topic: string = "actuators/notification";
-
-    constructor(private mqttClient: any) {} //reemplazar `any` con `IMQTTClient`
+export class NotificationActuator extends Actuator {
+    constructor(mqttClient: IMqttClient, greenhouseId: string) {
+        // Llama a super() para inicializar la clase base
+        super(mqttClient, greenhouseId, "notification");
+    }
 
     executeAction(command: string): void {
         console.log(`Notificación enviada: ${command}`);
-    }
-
-    getTopic(): string {
-        return this.topic;
+        this.mqttClient.publish(this.getTopic(), command); // Publica el comando
     }
 }

@@ -1,8 +1,8 @@
-import { Sensor } from "../sensor";
-import { MqttClient } from "../../core/mqtt/MqttClient"
+import { Sensor } from "../Sensor.js";
+import { IMqttClient } from "../../core/mqtt/MqttClient"; // Usa la interfaz correcta
 
 export class WaterLevelSensor extends Sensor {
-  constructor(mqttClient: MqttClient, greenhouseId: string) {
+  constructor(mqttClient: IMqttClient, greenhouseId: string) {
     super(mqttClient, greenhouseId, "water_level");
   }
 
@@ -11,5 +11,4 @@ export class WaterLevelSensor extends Sensor {
     console.log(`Nivel de agua: ${level}%`);
     this.mqttClient.publish(this.topic, JSON.stringify({ value: level }));
   }
-
 }

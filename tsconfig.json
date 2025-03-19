@@ -6,15 +6,18 @@
     "rootDir": "./",
     "strict": true,
     "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@interfaces/*": ["interfaces/*"],
-      "@actuadores/*": ["actuadores/*"],
+      "@actuators/*": ["actuators/*"],
       "@factories/*": ["factories/*"],
-      "@sensores/*": ["sensores/*"]
+      "@sensors/*": ["sensors/*"]
     }
   },
-  "include": ["src/**/*", "main.ts", "interfaces/**/*", "actuadores/**/*", "sensores/**/*"],
+  "include": ["src/**/*", "main.ts", "interfaces/**/*", "actuators/**/*", "sensors/**/*",
+              "factories/**/*"],
   "exclude": ["node_modules"]
 }

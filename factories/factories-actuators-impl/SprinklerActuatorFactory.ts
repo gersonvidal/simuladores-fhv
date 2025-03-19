@@ -1,16 +1,15 @@
 // src/factories/SprinklerActuatorFactory.ts
-import { IActuatorFactory } from "../../factories/factories-actuadores-impl/IActuatorFactory";
-import { IActuator } from "../../interfaces/IActuator";
-import { SprinklerActuator } from "../../actuadores/actuador-aspersores/SprinklerActuator";
+import { IActuatorFactory } from "../factories-actuators-impl/IActuatorFactory";
+import { Actuator } from "../../actuators/Actuator";
+import { SprinklerActuator } from "../../actuators/sprinkler-actuator/SprinklerActuator";
+import { IMqttClient } from "../../core/mqtt/IMqttClient";
 
 export class SprinklerActuatorFactory implements IActuatorFactory {
-    createActuator(): IActuator {
-        // Simulación de un cliente MQTT (puedes reemplazar esto con una implementación real)
-        const mqttClient = {
-            publish: (topic: string, message: string) => {
-                console.log(`Publicando en ${topic}: ${message}`);
-            },
-        };
-        return new SprinklerActuator(mqttClient);
+    // Añadimos el greenhouseId como parámetro del constructor
+    constructor(private mqttClient: IMqttClient, private greenhouseId: string) {}
+
+    createActuator(): Actuator {
+        // Pasamos tanto mqttClient como greenhouseId al constructor
+        return new SprinklerActuator(this.mqttClient, this.greenhouseId);
     }
 }

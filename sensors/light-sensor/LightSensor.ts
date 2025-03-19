@@ -1,8 +1,9 @@
-import { Sensor } from "../sensor";
-import { MqttClient } from "../../core/mqtt/MqttClient"
+import { Sensor } from "../Sensor.js";
+import { IMqttClient } from "../../core/mqtt/MqttClient"; // Usa la interfaz correcta
+
 
 export class LightSensor extends Sensor {
-  constructor(mqttClient: MqttClient, greenhouseId: string) {
+  constructor(mqttClient: IMqttClient, greenhouseId: string) {
     super(mqttClient, greenhouseId, "light");
   }
 

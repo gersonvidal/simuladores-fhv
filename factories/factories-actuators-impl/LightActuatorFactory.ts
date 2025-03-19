@@ -1,15 +1,14 @@
-// src/factories/LightActuatorFactory.ts
-import { IActuatorFactory } from "./IActuatorFactory";
-import { IActuator } from "../../interfaces/IActuator";
-import { LightActuator } from "../../actuadores/actuador-lamparas/LightActuator";
+import { IActuatorFactory } from "../../factories/factories-actuators-impl/IActuatorFactory";
+import { LightActuator } from "../../actuators/light-actuator/LightActuator";
+import { IMqttClient } from "../../core/mqtt/IMqttClient";
 
 export class LightActuatorFactory implements IActuatorFactory {
-    createActuator(): IActuator {
-        const mqttClient = {
-            publish: (topic: string, message: string) => {
-                console.log(`Publicando en ${topic}: ${message}`);
-            },
-        };
-        return new LightActuator(mqttClient);
+    constructor(
+        private mqttClient: IMqttClient,  // Usamos la interfaz aquí
+        private greenhouseId: string
+    ) {}
+
+    createActuator(): LightActuator {
+        return new LightActuator(this.mqttClient, this.greenhouseId);
     }
 }

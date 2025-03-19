@@ -1,16 +1,15 @@
+// actuators/water-pump-actuator/WaterPumpActuator.ts
+import { Actuator } from "../Actuator.js";
+import { IMqttClient } from "../../core/mqtt/IMqttClient";
 
-import { IActuator } from "../../interfaces/IActuator";
-
-export class WaterPumpActuator implements IActuator {
-    private topic: string = "actuators/waterPump";
-
-    constructor(private mqttClient: any) {} // reemplazar `any` con `IMQTTClient`
+export class WaterPumpActuator extends Actuator {
+    constructor(mqttClient: IMqttClient, greenhouseId: string) {
+        // Llama a super() para inicializar la clase base
+        super(mqttClient, greenhouseId, "waterPump");
+    }
 
     executeAction(command: string): void {
         console.log(`Bomba de agua ${command === "ON" ? "activada" : "desactivada"}`);
-    }
-
-    getTopic(): string {
-        return this.topic;
+        this.mqttClient.publish(this.getTopic(), command); // Publica el comando
     }
 }

@@ -1,15 +1,11 @@
 // src/factories/WaterPumpActuatorFactory.ts
-import { IActuatorFactory } from "../../factories/factories-actuadores-impl/IActuatorFactory";
-import { IActuator } from "../../interfaces/IActuator";
-import { WaterPumpActuator } from "../../actuadores/actuador-bomba-de-agua/WaterPumpActuator";
+import { IActuatorFactory } from "../factories-actuators-impl/IActuatorFactory";
+import { Actuator } from "../../actuators/Actuator";
+import { WaterPumpActuator } from "../../actuators/water-pump-actuator/WaterPumpActuator";
+import { mqttClient } from "../../core/mqtt/MqttClient"
 
 export class WaterPumpActuatorFactory implements IActuatorFactory {
-    createActuator(): IActuator {
-        const mqttClient = {
-            publish: (topic: string, message: string) => {
-                console.log(`Publicando en ${topic}: ${message}`);
-            },
-        };
-        return new WaterPumpActuator(mqttClient);
+    createActuator(greenhouseId: string): Actuator {
+        return new WaterPumpActuator(mqttClient, greenhouseId); // Pasa mqttClient y greenhouseId
     }
 }
