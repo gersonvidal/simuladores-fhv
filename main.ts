@@ -1,145 +1,48 @@
-// src/main.ts
-import { HumiditySensor } from "./sensores/sensor-humedad/HumiditySensor.js";
-import { LightSensor } from "./sensores/sensor-luminosidad/LightSensor.js";
-import { WaterLevelSensor } from "./sensores/sensor-nivel-de-agua/WaterLevelSensor.js";
-import { TemperatureSensor } from "./sensores/sensor-temperatura/TemperatureSensor.js";
-import { SprinklerActuator } from "./actuadores/actuador-aspersores/SprinklerActuator.js";
-import { LightActuator } from "./actuadores/actuador-lamparas/LightActuator.js";
-import { WaterPumpActuator } from "./actuadores/actuador-bomba-de-agua/WaterPumpActuator.js";
-import { NotificationActuator } from "./actuadores/actuador-notificaciones/NotificationActuator.js";
-import { IMQTTClient } from "./interfaces/IMQTTClient.js";
+//main.ts
+import { HumiditySensor } from "./sensors/humidity-sensor/HumiditySensor.js";
+import { TemperatureSensor } from "./sensors/temperature-sensor/TemperatureSensor.js";
+import { WaterLevelSensor } from "./sensors/water-level-sensor/WaterLevelSensor.js";
+import { LightSensor } from "./sensors/light-sensor/LightSensor.js";
+import { MqttClientImplementation } from "./core/mqtt/MqttClientImplementation.js"; // Cliente MQTT real
+import { Logs } from "./src/utils/Logs.js";
+import { LightActuator } from "./actuators/light-actuator/LightActuator.js";
 
-// Simulación de un cliente MQTT
-const mqttClient: IMQTTClient = {
-  connect(): void {
-      console.log("Conectado al broker MQTT.");
-  },
-  disconnect(): void {
-      console.log("Desconectado del broker MQTT.");
-  },
-  publish(topic: string, message: string): void {
-      console.log(`Publicando en ${topic}: ${message}`);
-  },
-  subscribe(topic: string, callback: (message: string) => void): void {
-      console.log(`Suscrito al tópico ${topic}`);
-      // Simular la recepción de mensajes MQTT
-      setInterval(() => {
-          const simulatedValue = Math.random() * 100; // Simula un valor aleatorio
-          callback(JSON.stringify({ value: simulatedValue }));
-      }, 3000); // Simula mensajes cada 3 segundos
-  },
-};
+// Crear una instancia del Logger
+const logger = new Logs();
 
-// Crear instancias de sensores y actuadores
-const temperatureSensor = new TemperatureSensor(mqttClient);
-const humiditySensor = new HumiditySensor(mqttClient);
-const waterLevelSensor = new WaterLevelSensor(mqttClient);
-const lightSensor = new LightSensor(mqttClient);
+// Crear una instancia del cliente MQTT real
+const mqttClient = new MqttClientImplementation("mqtt://localhost:1883");
 
-const sprinkler = new SprinklerActuator(mqttClient);
-const light = new LightActuator(mqttClient);
-const waterPump = new WaterPumpActuator(mqttClient);
-const notification = new NotificationActuator(mqttClient);
+// Definir ID del invernadero
+const greenhouseId = "greenhouse-1";
 
-// Suscribir los actuadores a los temas MQTT
-mqttClient.subscribe("sensors/temperature", (message: string) => {
-    const data = JSON.parse(message);
-    const temperature = data.value;
+// Crear instancias de sensores
+const temperatureSensor = new TemperatureSensor(mqttClient, greenhouseId);
+const humiditySensor = new HumiditySensor(mqttClient, greenhouseId, "any");
+const waterLevelSensor = new WaterLevelSensor(mqttClient, greenhouseId);
+const lightSensor = new LightSensor(mqttClient, greenhouseId);
 
-    if (temperature < 18 || temperature > 25) { // Rango óptimo para cebada, avena y trigo
-        notification.executeAction(`Temperatura crítica: ${temperature}°C`);
-    }
-});
+// Crear instancia del actuador de luz
+const lightActuator = new LightActuator(mqttClient, greenhouseId);
 
-mqttClient.subscribe("sensors/humidity", (message: string) => {
-    const data = JSON.parse(message);
-    const humidity = data.value;
-
-    if (humidity < 60 || humidity > 70) { // Rango óptimo para cebada, trigo y sorgo
-        sprinkler.executeAction("ON");
-    } else {
-        sprinkler.executeAction("OFF");
-    }
-});
-
-mqttClient.subscribe("sensors/light", (message: string) => {
-    const data = JSON.parse(message);
-    const luminosity = data.value;
-
-    if (luminosity < 9) { // Menos de 9 horas de luz
-        light.executeAction("ON");
-    } else {
-        light.executeAction("OFF");
-    }
-});
-
-mqttClient.subscribe("sensors/waterLevel", (message: string) => {
-    const data = JSON.parse(message);
-    const level = data.value;
-
-    if (level < 50) { // Nivel de agua bajo
-        waterPump.executeAction("ON");
-    } else {
-        waterPump.executeAction("OFF");
-    }
-});
-
-class Simulacion {
-  private intervalId: ReturnType<typeof setInterval> | null = null;
-
-  runSimulation(): void {
+// Función para ejecutar la simulación
+function runSimulation(): void {
     const now = new Date();
     console.log("Fecha y Hora: " + now.toString());
 
-    // Leer datos de los sensores
-    temperatureSensor.readData();
-    humiditySensor.readData();
-    waterLevelSensor.readData();
-    lightSensor.readData();
+    // Leer datos de los sensores y publicarlos
+    temperatureSensor.readAndPublishData();
+    humiditySensor.readAndPublishData();
+    waterLevelSensor.readAndPublishData();
+    lightSensor.readAndPublishData();
 
     console.log("---------------------------------");
-  }
-
-  startSimulation(): void {
-    this.intervalId = setInterval(() => {
-      this.runSimulation();
-    }, 2500);
-  }
-
-  stopSimulation(): void {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
-    }
-  }
 }
 
-// Verificar si estamos en un entorno de navegador
-if (typeof window !== "undefined") {
-    // Cuando el DOM esté listo, conecta el botón y ejecuta la simulación.
-    window.addEventListener("DOMContentLoaded", () => {
-      const simulation = new Simulacion();
-  
-      const startSimulationButton = document.getElementById("startSimulationButton") as HTMLButtonElement;
-      let isSimulationRunning = false;
-  
-      if (startSimulationButton) {
-          startSimulationButton.addEventListener("click", () => {
-              if (isSimulationRunning) {
-                  simulation.stopSimulation();
-                  startSimulationButton.textContent = "Iniciar Simulación General";
-              } else {
-                  simulation.startSimulation();
-                  startSimulationButton.textContent = "Detener Simulación";
-              }
-  
-              isSimulationRunning = !isSimulationRunning;
-          });
-      }
-    });
-  } else {
-    // Si estamos en Node.js, ejecutamos la simulación en la consola
-    const simulation = new Simulacion();
-    simulation.startSimulation();
-  }
-  
+// Iniciar la simulación cada 2.5 segundos
+const intervalId = setInterval(runSimulation, 2500);
+
+// Mostrar el historial de eventos cada 10 segundos
+setInterval(() => {
+    logger.showLogs();
+}, 10000);

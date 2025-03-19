@@ -1,16 +1,15 @@
 
-import { IActuator } from "../../interfaces/IActuator";
+import { Actuator } from "../Actuator.js";
+import { IMqttClient } from "../../core/mqtt/IMqttClient";
 
-export class SprinklerActuator implements IActuator {
-    private topic: string = "actuators/sprinkler";
-
-    constructor(private mqttClient: any) {} //reemplazar `any` con `IMQTTClient` si tienes la interfaz
+export class SprinklerActuator extends Actuator {
+    constructor(mqttClient: IMqttClient, greenhouseId: string) {
+        // Llama a super() para inicializar la clase base
+        super(mqttClient, greenhouseId, "sprinkler");
+    }
 
     executeAction(command: string): void {
         console.log(`Aspersor ${command === "ON" ? "activado" : "desactivado"}`);
-    }
-
-    getTopic(): string {
-        return this.topic;
+        this.mqttClient.publish(this.getTopic(), command); // Publica el comando
     }
 }

@@ -1,6 +1,6 @@
 // src/interfaces/IActuatorFactory.ts
-import { IActuator } from "../../interfaces/IActuator";
+import { Actuator } from "../../actuators/Actuator";
 
 export interface IActuatorFactory {
-    createActuator(): IActuator;
+    createActuator(greenhouseId: string): Actuator;
 }

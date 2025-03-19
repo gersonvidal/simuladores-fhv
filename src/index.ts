@@ -1,22 +1,19 @@
-import { SprinklerActuator } from "../actuadores/actuador-aspersores/SprinklerActuator";
-import { LightActuator } from "../actuadores/actuador-lamparas/LightActuator";
-import { WaterPumpActuator } from "../actuadores/actuador-bomba-de-agua/WaterPumpActuator";
-import { NotificationActuator } from "../actuadores/actuador-notificaciones/NotificationActuator";
+import { SprinklerActuator } from "../actuators/sprinkler-actuator/SprinklerActuator";
+import { LightActuator } from "../actuators/light-actuator/LightActuator";
+import { WaterPumpActuator } from "../actuators/water-pump-actuator/WaterPumpActuator";
+import { NotificationActuator } from "../actuators/notification-actuator/NotificationActuator";
+import { mqttClient } from "../core/mqtt/MqttClient"; // Usa el cliente MQTT real
 
-// Simulación de un cliente MQTT (reemplar después por el real)
-const mqttClient = {
-    publish: (topic: string, message: string) => {
-        console.log(`Publicando en ${topic}: ${message}`);
-    },
-};
+// Definir el ID del invernadero (ajústalo según sea necesario)
+const greenhouseId = "GH-001";
 
-//Instancias de los actuadores
-const sprinkler = new SprinklerActuator(mqttClient);
-const light = new LightActuator(mqttClient);
-const waterPump = new WaterPumpActuator(mqttClient);
-const notification = new NotificationActuator(mqttClient);
+// Instancias de los actuadores con el cliente MQTT real
+const sprinkler = new SprinklerActuator(mqttClient, greenhouseId);
+const light = new LightActuator(mqttClient, greenhouseId);
+const waterPump = new WaterPumpActuator(mqttClient, greenhouseId);
+const notification = new NotificationActuator(mqttClient, greenhouseId);
 
-//Para probar actuadores
+// Probar actuadores
 sprinkler.executeAction("OFF");
 light.executeAction("ON");
 waterPump.executeAction("OFF");

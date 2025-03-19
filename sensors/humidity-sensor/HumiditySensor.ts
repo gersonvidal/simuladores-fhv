@@ -1,9 +1,9 @@
-import { Sensor } from "../sensor";
-import { MqttClient } from "../../core/mqtt/MqttClient"
+import { Sensor } from "../Sensor.js"; // Asegúrate de importar correctamente la clase base
+import { IMqttClient } from "../../core/mqtt/MqttClient"; // Usa la interfaz de MQTT
 
 export class HumiditySensor extends Sensor {
-  constructor(mqttClient: MqttClient, greenhouseId: string) {
-    super(mqttClient, greenhouseId, "humidity");
+  constructor(mqttClient: IMqttClient, greenhouseId: string, sensorType: string) {
+    super(mqttClient, greenhouseId, sensorType); // Llamada al constructor de la clase base
   }
 
   readAndPublishData(): void {

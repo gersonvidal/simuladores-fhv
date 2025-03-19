@@ -1,24 +1,26 @@
-import { Device } from "../core/device/Device";
+// actuators/Actuator.ts
+import { Device } from "../core/device/Device.js";
+import { IMqttClient } from "../core/mqtt/IMqttClient"; // Asegúrate de que la ruta sea correcta
 
 export abstract class Actuator extends Device {
-  constructor(
-    mqttClient: MqttClient,
-    greenhouseId: string,
-    actuatorType: string
-  ) {
-    super(
-      mqttClient,
-      greenhouseId,
-      `greenhouse/${greenhouseId}/actuator/${actuatorType}`
-    );
-    this.subscribeToTopic();
-  }
+    constructor(
+        mqttClient: IMqttClient,
+        greenhouseId: string,
+        actuatorType: string
+    ) {
+        super(
+            mqttClient,
+            greenhouseId,
+            `greenhouse/${greenhouseId}/actuator/${actuatorType}`
+        );
+        this.subscribeToTopic();
+    }
 
-  protected subscribeToTopic(): void {
-    this.mqttClient.subscribe(this.getTopic(), (message) => {
-      this.executeAction(message);
-    });
-  }
+    public subscribeToTopic(): void {
+        this.mqttClient.subscribe(this.getTopic(), (message: String) => {
+            this.executeAction(message.toString()); 
+        });
+    }
 
-  executeAction(command: string): void {}
+    abstract executeAction(command: string): void;
 }

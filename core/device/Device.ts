@@ -1,15 +1,17 @@
+import { IMqttClient } from "../mqtt/IMqttClient"; // Asegúrate de que la ruta sea correcta
+
 export abstract class Device {
-    protected mqttClient: MqttClient;
+    protected mqttClient: IMqttClient;
     protected greenhouseId: string;
     protected topic: string;
 
-    constructor(mqttClient: MqttClient, greenhouseId: string, topic: string) {
+    constructor(mqttClient: IMqttClient, greenhouseId: string, topic: string) {
         this.mqttClient = mqttClient;
         this.greenhouseId = greenhouseId; 
         this.topic = topic;
     }
 
-    getMqttClient(): MqttClient {
+    getMqttClient(): IMqttClient {
         return this.mqttClient;
     }
 
@@ -20,5 +22,4 @@ export abstract class Device {
     getTopic(): string {
         return this.topic;
     }
-
 }

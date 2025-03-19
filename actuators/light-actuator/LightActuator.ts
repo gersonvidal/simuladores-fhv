@@ -1,16 +1,13 @@
+// actuators/light-actuator/LightActuator.ts
+import { Actuator } from "../Actuator.js";
+import { IMqttClient } from "../../core/mqtt/IMqttClient";
 
-import { IActuator } from "../../interfaces/IActuator";
-
-export class LightActuator implements IActuator {
-    private topic: string = "actuators/light";
-
-    constructor(private mqttClient: any) {} // reemplazar `any` con `IMQTTClient`
+export class LightActuator extends Actuator {
+    constructor(mqttClient: IMqttClient, greenhouseId: string) {
+        super(mqttClient, greenhouseId, "light"); // "light" es el tipo de actuador
+    }
 
     executeAction(command: string): void {
         console.log(`Lámpara ${command === "ON" ? "encendida" : "apagada"}`);
-    }
-
-    getTopic(): string {
-        return this.topic;
     }
 }
