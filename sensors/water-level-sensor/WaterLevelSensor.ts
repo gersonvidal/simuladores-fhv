@@ -8,7 +8,7 @@ export class WaterLevelSensor extends Sensor {
 
   readAndPublishData(): void {
     const level = Math.floor(Math.random() * 101); // Nivel entre 0 y 100
-    console.log(`Nivel de agua: ${level}%`);
+    console.log(`💧 Nivel de agua: ${level}%`);
     this.mqttClient.publish(this.topic, JSON.stringify({ value: level }));
   }
 }

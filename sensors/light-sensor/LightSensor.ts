@@ -9,7 +9,7 @@ export class LightSensor extends Sensor {
 
   readAndPublishData(): void {
     const luminosity = Math.floor(Math.random() * 1000); // Medida en lux
-    console.log(`Luminosidad: ${luminosity} lux`);
+    console.log(`💡 Luminosidad: ${luminosity} lux`);
     this.mqttClient.publish(this.topic, JSON.stringify({ value: luminosity }));
   }
 }
