@@ -6,6 +6,6 @@ import { mqttClient } from "../../core/mqtt/MqttClient"; // Aquí importas la in
 
 export class HumiditySensorFactory implements DeviceFactory<Sensor> {
   createDevice(greenhouseId: string): Sensor {
-    return new HumiditySensor(mqttClient, greenhouseId, "humidity");
+    return new HumiditySensor(mqttClient, greenhouseId);
   }
 }
