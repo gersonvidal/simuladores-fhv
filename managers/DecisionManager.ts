@@ -1,7 +1,11 @@
-import { mqttClient } from "../core/mqtt/MqttClient";
+import { IMqttClient } from "../core/mqtt/IMqttClient"; // Importa la interfaz correctamente
 
 export abstract class DecisionManager {
-    protected mqttClient: typeof mqttClient;  // Usar typeof para referirse al tipo de mqttClient
+    protected mqttClient: IMqttClient;  // Usa la interfaz IMqttClient
 
-    subscribeToSensors(): void {}
+    constructor(mqttClient: IMqttClient) {
+        this.mqttClient = mqttClient;  // Asigna el cliente MQTT
+    }
+
+    abstract subscribeToSensors(): void;
 }
