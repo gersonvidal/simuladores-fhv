@@ -14,16 +14,16 @@ import { Logs } from "./src/utils/Logs.js";
 const logger = new Logs();
 
 // Crear una instancia del cliente MQTT real
-const mqttClient = new MqttClientImplementation("mqtt://192.168.175.151:1883");
+const mqttClient = new MqttClientImplementation("mqtt://localhost:1883");
 
 // Definir ID del invernadero
 const greenhouseId = "greenhouse-1";
 
 // Crear instancias de sensores
-const humiditySensor = new HumiditySensor(mqttClient, greenhouseId);
-const temperatureSensor = new TemperatureSensor(mqttClient, greenhouseId);
-const waterLevelSensor = new WaterLevelSensor(mqttClient, greenhouseId);
-const lightSensor = new LightSensor(mqttClient, greenhouseId);
+const humiditySensor = new HumiditySensor(mqttClient, greenhouseId, "humidity");
+const temperatureSensor = new TemperatureSensor(mqttClient, greenhouseId, "temperature");
+const waterLevelSensor = new WaterLevelSensor(mqttClient, greenhouseId, "water_level");
+const lightSensor = new LightSensor(mqttClient, greenhouseId, "light");
 
 // Crear instancias de sensores
 const sprinklerActuator = new SprinklerActuator(mqttClient, greenhouseId);

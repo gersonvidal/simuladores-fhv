@@ -2,9 +2,13 @@ import { SprinklerActuator } from "../actuators/sprinkler-actuator/SprinklerActu
 import { LightActuator } from "../actuators/light-actuator/LightActuator";
 import { WaterPumpActuator } from "../actuators/water-pump-actuator/WaterPumpActuator";
 import { NotificationActuator } from "../actuators/notification-actuator/NotificationActuator";
-import { mqttClient } from "../core/mqtt/MqttClient"; // Usa el cliente MQTT real
+import { IMqttClient } from "../core/mqtt/IMqttClient"; // Usa el cliente MQTT real
+import { MqttClientImplementation } from "core/mqtt/MqttClientImplementation";
 
 // Definir el ID del invernadero (ajústalo según sea necesario)
+
+const mqttClient = new MqttClientImplementation("mqtt://localhost:1883");
+
 const greenhouseId = "GH-001";
 
 // Instancias de los actuadores con el cliente MQTT real
