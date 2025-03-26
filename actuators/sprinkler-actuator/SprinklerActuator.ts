@@ -2,6 +2,7 @@ import { Actuator } from "../Actuator.js";
 import { IMqttClient } from "../../core/mqtt/IMqttClient";
 
 export class SprinklerActuator extends Actuator {
+
   private lastCommand: string | null = null;
 
   constructor(mqttClient: IMqttClient, greenhouseId: string) {

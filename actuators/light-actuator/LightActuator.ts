@@ -1,8 +1,9 @@
 // actuators/light-actuator/LightActuator.ts
 import { Actuator } from "../Actuator.js";
-import { IMqttClient } from "../../core/mqtt/IMqttClient";
+import { IMqttClient } from "../../core/mqtt/IMqttClient.js";
 
 export class LightActuator extends Actuator {
+
   private lastCommand: string | null = null;
 
   constructor(mqttClient: IMqttClient, greenhouseId: string) {

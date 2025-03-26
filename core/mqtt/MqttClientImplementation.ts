@@ -1,9 +1,11 @@
+// core/mqtt/MqttClientImplementation.ts
+import { IMqttClient } from "./IMqttClient";  // Importar la interfaz
 import mqtt, { MqttClient as MqttLibClient } from "mqtt";
-import { IMqttClient } from "./IMqttClient";
 
 export class MqttClientImplementation implements IMqttClient {
     private client: MqttLibClient;
     private brokerUrl: string;
+    private actuatorsState: { [key: string]: boolean } = {};  // Mantener el estado de los actuadores
 
     constructor(brokerUrl: string) {
         this.brokerUrl = brokerUrl;
@@ -49,5 +51,13 @@ export class MqttClientImplementation implements IMqttClient {
     disconnect(): void {
         this.client.end();
         console.log("Desconectado del servidor MQTT");
+    }
+
+    isActuatorOn(topic: string): boolean {  // Implementación del método isActuatorOn
+        return this.actuatorsState[topic] || false;  // Devolver el estado del actuador
+    }
+
+    setActuatorState(topic: string, state: boolean): void {
+        this.actuatorsState[topic] = state;
     }
 }

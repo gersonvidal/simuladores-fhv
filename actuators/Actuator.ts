@@ -1,6 +1,5 @@
-// actuators/Actuator.ts
 import { Device } from "../core/device/Device.js";
-import { IMqttClient } from "../core/mqtt/IMqttClient"; // Asegúrate de que la ruta sea correcta
+import { IMqttClient } from "../core/mqtt/IMqttClient";
 
 export abstract class Actuator extends Device {
   private sensorTopic: string;
@@ -36,4 +35,5 @@ export abstract class Actuator extends Device {
   protected abstract handleSensorData(message: string): void;
 
   abstract executeAction(command: string): void;
+
 }
