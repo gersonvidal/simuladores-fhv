@@ -1,12 +1,12 @@
 // src/sensors/Sensor.ts
-import { IMqttClient } from "../core/mqtt/MqttClient"; // Importa la interfaz IMqttClient
+import { IMqttClient } from "../core/mqtt/IMqttClient"; // Importa la interfaz IMqttClient
 import { Device } from "../core/device/Device.js";
 
 export abstract class Sensor extends Device {
   protected value: number = 0;
 
   constructor(
-    mqttClient: IMqttClient,  // Usa la interfaz IMqttClient en vez de la instancia directamente
+    mqttClient: IMqttClient,
     greenhouseId: string,
     sensorType: string
   ) {
@@ -17,5 +17,9 @@ export abstract class Sensor extends Device {
 
   getValue(): number {
     return this.value;
+  }
+
+  protected isActuatorActive(actuatorType: string): boolean {
+    return this.mqttClient.isActuatorOn(`greenhouse/${this.greenhouseId}/actuator/${actuatorType}`);
   }
 }
