@@ -32,7 +32,7 @@ describe("LightSensor", () => {
       publish: jest.fn()
     } as unknown as IMqttClient;
 
-    sensor = new TestLightSensor(mockMqttClient, greenhouseId, "light");
+    sensor = new TestLightSensor(mockMqttClient, greenhouseId);
   });
 
   it("should publish a luminosity value between 0 and 1000", () => {

@@ -28,5 +28,4 @@ export abstract class Actuator extends Device {
   protected abstract handleSensorData(message: string): void;
 
   abstract executeAction(command: string): void;
-
 }

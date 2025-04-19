@@ -31,7 +31,7 @@ export class NotificationActuator extends Actuator {
 
   executeAction(command: string): void {
     if (command === this.lastCommand) return; // 👈 Evita spam si el estado no cambió
-    
+
     this.lastCommand = command;
 
     console.log(`☀️📡 Notificación enviada: ${command}`);

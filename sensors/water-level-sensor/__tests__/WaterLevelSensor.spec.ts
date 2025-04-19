@@ -32,7 +32,7 @@ describe("WaterLevelSensor", () => {
       publish: jest.fn()
     } as unknown as IMqttClient;
 
-    sensor = new TestWaterLevelSensor(mockMqttClient, greenhouseId, "water_level");
+    sensor = new TestWaterLevelSensor(mockMqttClient, greenhouseId);
   });
 
   it("should publish a water level value between 0 and 100", () => {

@@ -32,7 +32,7 @@ describe("HumiditySensor", () => {
       publish: jest.fn(),
     } as unknown as IMqttClient;
 
-    sensor = new TestHumiditySensor(mockMqttClient, greenhouseId, "humidity");
+    sensor = new TestHumiditySensor(mockMqttClient, greenhouseId);
   });
 
   it("should publish a humidity value between 65 and 90", () => {

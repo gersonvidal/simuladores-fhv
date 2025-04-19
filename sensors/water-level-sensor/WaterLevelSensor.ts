@@ -4,6 +4,10 @@ import { IMqttClient } from "../../core/mqtt/IMqttClient.js"; // Usa la interfaz
 export class WaterLevelSensor extends Sensor {
   private waterLevel: number = Math.random() * 100; // Estado interno
 
+  constructor(mqttClient: IMqttClient, greenhouseId: string) {
+    super(mqttClient, greenhouseId, "water_level");
+  }
+
   readAndPublishData(): void {
     // Si la bomba de agua está activada, el nivel de agua sube gradualmente
     if (this.isActuatorActive("waterPump")) {
@@ -16,4 +20,3 @@ export class WaterLevelSensor extends Sensor {
     this.mqttClient.publish(this.topic, JSON.stringify({ value: this.waterLevel.toFixed(2) }));
   }
 }
-
