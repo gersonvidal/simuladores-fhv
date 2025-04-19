@@ -1,15 +1,16 @@
 // src/factories/NotificationActuatorFactory.ts
-import { IActuatorFactory } from "../factories-actuators-impl/IActuatorFactory";
+import { DeviceFactory } from "@factories/DeviceFactory";
 import { Actuator } from "../../actuators/Actuator";
 import { NotificationActuator } from "../../actuators/notification-actuator/NotificationActuator";
 import { IMqttClient } from "../../core/mqtt/IMqttClient";
+import { MqttClientImplementation } from "core/mqtt/MqttClientImplementation";
 
-export class NotificationActuatorFactory implements IActuatorFactory {
-    // Añadimos el greenhouseId como parámetro del constructor
-    constructor(private mqttClient: IMqttClient, private greenhouseId: string) {}
+export class NotificationActuatorFactory implements DeviceFactory<Actuator> {
+  createDevice(greenhouseId: string): Actuator {
+    const mqttClient: IMqttClient = new MqttClientImplementation(
+      "mqtt://localhost:1883"
+    );
 
-    createActuator(): Actuator {
-        // Pasamos tanto mqttClient como greenhouseId al constructor
-        return new NotificationActuator(this.mqttClient, this.greenhouseId);
-    }
+    return new NotificationActuator(mqttClient, greenhouseId);
+  }
 }

@@ -1,14 +1,15 @@
-import { IActuatorFactory } from "../../factories/factories-actuators-impl/IActuatorFactory";
+import { MqttClientImplementation } from "core/mqtt/MqttClientImplementation";
 import { LightActuator } from "../../actuators/light-actuator/LightActuator";
 import { IMqttClient } from "../../core/mqtt/IMqttClient";
+import { Actuator } from "@actuators/Actuator";
+import { DeviceFactory } from "@factories/DeviceFactory";
 
-export class LightActuatorFactory implements IActuatorFactory {
-    constructor(
-        private mqttClient: IMqttClient,  // Usamos la interfaz aquí
-        private greenhouseId: string
-    ) {}
+export class LightActuatorFactory implements DeviceFactory<Actuator> {
+  createDevice(greenhouseId: string): Actuator {
+    const mqttClient: IMqttClient = new MqttClientImplementation(
+      "mqtt://localhost:1883"
+    );
 
-    createActuator(): LightActuator {
-        return new LightActuator(this.mqttClient, this.greenhouseId);
-    }
+    return new LightActuator(mqttClient, greenhouseId);
+  }
 }
