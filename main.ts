@@ -1,68 +1,42 @@
-import { HumiditySensor } from "./sensors/humidity-sensor/HumiditySensor.js";
-import { TemperatureSensor } from "./sensors/temperature-sensor/TemperatureSensor.js";
-import { WaterLevelSensor } from "./sensors/water-level-sensor/WaterLevelSensor.js";
-import { LightSensor } from "./sensors/light-sensor/LightSensor.js";
-<<<<<<< HEAD
-import { MqttClientImplementation } from "./core/mqtt/MqttClientImplementation.js";
-import { Logs } from "./src/utils/Logs.js";
-import { LightActuator } from "./actuators/light-actuator/LightActuator.js";
-import { SprinklerActuator } from "./actuators/sprinkler-actuator/SprinklerActuator.js";
-import { DecisionManagerImplementation } from "./managers/DecisionManagerImplementation.js";
-=======
-import { SprinklerActuator } from "./actuators/sprinkler-actuator/SprinklerActuator.js";
-import { NotificationActuator } from "./actuators/notification-actuator/NotificationActuator.js";
-import { WaterPumpActuator } from "./actuators/water-pump-actuator/WaterPumpActuator.js";
-import { LightActuator } from "./actuators/light-actuator/LightActuator.js";
-import { MqttClientImplementation } from "./core/mqtt/MqttClientImplementation.js"; // Cliente MQTT real
-import { Logs } from "./src/utils/Logs.js";
->>>>>>> develop
+import { HumiditySensorFactory } from "./factories/factories-sensors-impl/HumiditySensorFactory.js";
+import { TemperatureSensorFactory } from "./factories/factories-sensors-impl/TemperatureSensorFactory.js";
+import { WaterLevelSensorFactory } from "./factories/factories-sensors-impl/WaterLevelSensorFactory.js";
+import { LightSensorFactory } from "./factories/factories-sensors-impl/LightSensorFactory.js";
 
-// Crear una instancia del Logger
+import { SprinklerActuatorFactory } from "./factories/factories-actuators-impl/SprinklerActuatorFactory.js";
+import { NotificationActuatorFactory } from "./factories/factories-actuators-impl/NotificationActuatorFactory.js";
+import { WaterPumpActuatorFactory } from "./factories/factories-actuators-impl/WaterPumpActuatorFactory.js";
+import { LightActuatorFactory } from "./factories/factories-actuators-impl/LightActuatorFactory.js";
+
+import { Logs } from "./src/utils/Logs.js";
+
+// Instancias base
 const logger = new Logs();
-
-// Crear una instancia del cliente MQTT real
-const mqttClient = new MqttClientImplementation("mqtt://localhost:1883");
-
-// Definir ID del invernadero
 const greenhouseId = "greenhouse-1";
 
+// Crear fábricas de sensores
+const humiditySensorFactory = new HumiditySensorFactory();
+const temperatureSensorFactory = new TemperatureSensorFactory();
+const waterLevelSensorFactory = new WaterLevelSensorFactory();
+const lightSensorFactory = new LightSensorFactory();
+
+// Crear fábricas de actuadores
+const sprinklerActuatorFactory = new SprinklerActuatorFactory();
+const notificationActuatorFactory = new NotificationActuatorFactory();
+const waterPumpActuatorFactory = new WaterPumpActuatorFactory();
+const lightActuatorFactory = new LightActuatorFactory();
+
 // Crear instancias de sensores
-const humiditySensor = new HumiditySensor(mqttClient, greenhouseId, "humidity");
-const temperatureSensor = new TemperatureSensor(mqttClient, greenhouseId, "temperature");
-const waterLevelSensor = new WaterLevelSensor(mqttClient, greenhouseId, "water_level");
-const lightSensor = new LightSensor(mqttClient, greenhouseId, "light");
+const humiditySensor = humiditySensorFactory.createDevice(greenhouseId);
+const temperatureSensor = temperatureSensorFactory.createDevice(greenhouseId);
+const waterLevelSensor = waterLevelSensorFactory.createDevice(greenhouseId);
+const lightSensor = lightSensorFactory.createDevice(greenhouseId);
 
-<<<<<<< HEAD
-// Crear instancias de actuadores
-=======
 // Crear instancias de sensores
-const sprinklerActuator = new SprinklerActuator(mqttClient, greenhouseId);
-const notificationActuator = new NotificationActuator(mqttClient, greenhouseId);
-const waterPumpActuator = new WaterPumpActuator(mqttClient, greenhouseId);
->>>>>>> develop
-const lightActuator = new LightActuator(mqttClient, greenhouseId);
-const sprinklerActuator = new SprinklerActuator(mqttClient, greenhouseId);
-
-// Crear instancia del Decision Manager y pasarle el mqttClient
-const decisionManager = new DecisionManagerImplementation(mqttClient);
-decisionManager.subscribeToSensors();
-
-// Función para ejecutar la simulación
-// function runSimulation(): void {
-//   const now = new Date();
-//   console.log("Fecha y Hora: " + now.toString());
-
-//    Leer datos de los sensores y publicarlos
-//   temperatureSensor.readAndPublishData();
-//   humiditySensor.readAndPublishData();
-//   waterLevelSensor.readAndPublishData();
-//   lightSensor.readAndPublishData();
-
-//   console.log("---------------------------------");
-// }
-
-// Iniciar la simulación cada 2.5 segundos
-// const intervalId = setInterval(runSimulation, 2500);
+const sprinklerActuator = sprinklerActuatorFactory.createDevice(greenhouseId);
+const notificationActuator = notificationActuatorFactory.createDevice(greenhouseId);
+const waterPumpActuator = waterPumpActuatorFactory.createDevice(greenhouseId);
+const lightActuator = lightActuatorFactory.createDevice(greenhouseId);
 
 /**
  * Programa la publicación de datos de un sensor a intervalos fijos.
