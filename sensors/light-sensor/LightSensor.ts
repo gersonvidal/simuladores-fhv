@@ -5,6 +5,10 @@ import { IMqttClient } from "../../core/mqtt/IMqttClient"; // Usa la interfaz co
 export class LightSensor extends Sensor {
   private luminosity: number = Math.random() * 1000; // Estado interno
 
+  constructor(mqttClient: IMqttClient, greenhouseId: string) {
+    super(mqttClient, greenhouseId, "light");
+  }
+
   readAndPublishData(): void {
     // Si el actuador de luz está encendido, la luminosidad aumenta
     if (this.isActuatorActive("light")) {
@@ -17,4 +21,3 @@ export class LightSensor extends Sensor {
     this.mqttClient.publish(this.topic, JSON.stringify({ value: this.luminosity.toFixed(2) }));
   }
 }
-

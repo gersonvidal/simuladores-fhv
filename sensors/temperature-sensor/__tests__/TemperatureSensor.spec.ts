@@ -32,7 +32,7 @@ describe("TemperatureSensor", () => {
       publish: jest.fn()
     } as unknown as IMqttClient;
 
-    sensor = new TestTemperatureSensor(mockMqttClient, greenhouseId, "temperature");
+    sensor = new TestTemperatureSensor(mockMqttClient, greenhouseId);
   });
 
   it("should publish a temperature value between 22 and 36", () => {

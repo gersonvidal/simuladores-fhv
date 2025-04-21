@@ -2,11 +2,9 @@ import { Actuator } from "../Actuator.js";
 import { IMqttClient } from "../../core/mqtt/IMqttClient";
 
 export class SprinklerActuator extends Actuator {
-
   private lastCommand: string | null = null;
 
   constructor(mqttClient: IMqttClient, greenhouseId: string) {
-    // Llama a super() para inicializar la clase base
     super(mqttClient, greenhouseId, "sprinkler", "humidity");
   }
 
@@ -34,7 +32,9 @@ export class SprinklerActuator extends Actuator {
 
     this.lastCommand = command;
 
-    console.log(`🚿 Aspersor ${command === "ON" ? "activado 🟢" : "desactivado 🔴"}`);
+    console.log(
+      `🚿 Aspersor ${command === "ON" ? "activado 🟢" : "desactivado 🔴"}`
+    );
     this.mqttClient.publish(this.getTopic(), command); // Publica el comando
   }
 }

@@ -16,14 +16,7 @@ export abstract class Actuator extends Device {
       `greenhouse/${greenhouseId}/actuator/${actuatorType}`
     );
     this.sensorTopic = `greenhouse/${greenhouseId}/sensor/${sensorType}`;
-    this.subscribeToTopic();
     this.subscribeToSensorTopic();
-  }
-
-  public subscribeToTopic(): void {
-    this.mqttClient.subscribe(this.getTopic(), (message: String) => {
-      this.executeAction(message.toString());
-    });
   }
 
   private subscribeToSensorTopic(): void {
@@ -35,5 +28,4 @@ export abstract class Actuator extends Device {
   protected abstract handleSensorData(message: string): void;
 
   abstract executeAction(command: string): void;
-
 }

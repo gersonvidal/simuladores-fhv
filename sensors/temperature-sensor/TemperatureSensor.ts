@@ -1,8 +1,12 @@
 import { Sensor } from "../Sensor.js";
-import { IMqttClient } from "../../core/mqtt/MqttClient"; // Usa la interfaz correcta
+import { IMqttClient } from "../../core/mqtt/IMqttClient.js"; // Usa la interfaz correcta
 
 export class TemperatureSensor extends Sensor {
   private temperature: number = Math.random() * (36 - 22) + 22; // Estado interno
+
+  constructor(mqttClient: IMqttClient, greenhouseId: string) {
+    super(mqttClient, greenhouseId, "temperature"); // Llamada al constructor de la clase base
+  }
 
   readAndPublishData(): void {
     // Si el aspersor está activado, la temperatura baja poco a poco

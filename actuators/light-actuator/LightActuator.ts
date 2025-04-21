@@ -3,7 +3,6 @@ import { Actuator } from "../Actuator.js";
 import { IMqttClient } from "../../core/mqtt/IMqttClient.js";
 
 export class LightActuator extends Actuator {
-
   private lastCommand: string | null = null;
 
   constructor(mqttClient: IMqttClient, greenhouseId: string) {
@@ -35,7 +34,9 @@ export class LightActuator extends Actuator {
 
     this.lastCommand = command;
 
-    console.log(`💡 Lámpara ${command === "ON" ? "encendida 🟢" : "apagada 🔴"}`);
+    console.log(
+      `💡 Lámpara ${command === "ON" ? "encendida 🟢" : "apagada 🔴"}`
+    );
     this.mqttClient.publish(this.getTopic(), command); // Publica el comando
   }
 }

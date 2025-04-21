@@ -1,11 +1,16 @@
 // src/factories/WaterPumpActuatorFactory.ts
-import { IActuatorFactory } from "../factories-actuators-impl/IActuatorFactory";
-import { Actuator } from "../../actuators/Actuator";
-import { WaterPumpActuator } from "../../actuators/water-pump-actuator/WaterPumpActuator";
-import { mqttClient } from "../../core/mqtt/MqttClient"
+import { DeviceFactory } from "@factories/DeviceFactory.js";
+import { Actuator } from "../../actuators/Actuator.js";
+import { WaterPumpActuator } from "../../actuators/water-pump-actuator/WaterPumpActuator.js";
+import { MqttClientImplementation } from "../../core/mqtt/MqttClientImplementation.js";
+import { IMqttClient } from "../../core/mqtt/IMqttClient.js";
 
-export class WaterPumpActuatorFactory implements IActuatorFactory {
-    createActuator(greenhouseId: string): Actuator {
-        return new WaterPumpActuator(mqttClient, greenhouseId); // Pasa mqttClient y greenhouseId
-    }
+export class WaterPumpActuatorFactory implements DeviceFactory<Actuator> {
+  createDevice(greenhouseId: string): Actuator {
+    const mqttClient: IMqttClient = new MqttClientImplementation(
+      "mqtt://localhost:1883"
+    );
+
+    return new WaterPumpActuator(mqttClient, greenhouseId);
+  }
 }

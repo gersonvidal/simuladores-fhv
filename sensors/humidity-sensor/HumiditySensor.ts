@@ -4,6 +4,10 @@ import { IMqttClient } from "../../core/mqtt/IMqttClient"; // Usa la interfaz de
 export class HumiditySensor extends Sensor {
   private humidity: number = Math.random() * (90 - 65) + 65; // Estado interno
 
+  constructor(mqttClient: IMqttClient, greenhouseId: string) {
+    super(mqttClient, greenhouseId, "humidity");
+  }
+
   readAndPublishData(): void {
     // Si el aspersor está activado, la humedad sube gradualmente
     if (this.isActuatorActive("sprinkler")) {
@@ -13,7 +17,9 @@ export class HumiditySensor extends Sensor {
     }
 
     console.log(`🚿 Humedad medida: ${this.humidity.toFixed(2)}%`);
-    this.mqttClient.publish(this.topic, JSON.stringify({ value: this.humidity.toFixed(2) }));
+    this.mqttClient.publish(
+      this.topic,
+      JSON.stringify({ value: this.humidity.toFixed(2) })
+    );
   }
 }
-
