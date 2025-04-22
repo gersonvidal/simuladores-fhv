@@ -6,10 +6,8 @@ import { MqttClientImplementation } from "../../core/mqtt/MqttClientImplementati
 import { IMqttClient } from "../../core/mqtt/IMqttClient.js";
 
 export class WaterPumpActuatorFactory implements DeviceFactory<Actuator> {
-  createDevice(greenhouseId: string): Actuator {
-    const mqttClient: IMqttClient = new MqttClientImplementation(
-      "mqtt://localhost:1883"
-    );
+  createDevice(greenhouseId: string, brokerUrl: string): Actuator {
+    const mqttClient: IMqttClient = new MqttClientImplementation(brokerUrl);
 
     return new WaterPumpActuator(mqttClient, greenhouseId);
   }
