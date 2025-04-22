@@ -6,9 +6,9 @@ import { MqttClientImplementation } from "../../core/mqtt/MqttClientImplementati
 import { IMqttClient } from "../../core/mqtt/IMqttClient.js";  // Importa la interfaz
 
 export class WaterLevelSensorFactory implements DeviceFactory<Sensor> {
-  createDevice(greenhouseId: string): Sensor {
+  createDevice(greenhouseId: string, brokerUrl: string): Sensor {
     // Instancia mqttClient
-    const mqttClient: IMqttClient = new MqttClientImplementation("mqtt://localhost:1883");
+    const mqttClient: IMqttClient = new MqttClientImplementation(brokerUrl);
 
     // Pasa la instancia a los sensores
     return new WaterLevelSensor(mqttClient, greenhouseId);

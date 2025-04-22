@@ -13,6 +13,7 @@ import { Logs } from "./src/utils/Logs.js";
 // Instancias base
 const logger = new Logs();
 const greenhouseId = "greenhouse-1";
+const brokerUrl = "mqtt://localhost:1883";
 
 // Crear fábricas de sensores
 const humiditySensorFactory = new HumiditySensorFactory();
@@ -27,16 +28,41 @@ const waterPumpActuatorFactory = new WaterPumpActuatorFactory();
 const lightActuatorFactory = new LightActuatorFactory();
 
 // Crear instancias de sensores
-const humiditySensor = humiditySensorFactory.createDevice(greenhouseId);
-const temperatureSensor = temperatureSensorFactory.createDevice(greenhouseId);
-const waterLevelSensor = waterLevelSensorFactory.createDevice(greenhouseId);
-const lightSensor = lightSensorFactory.createDevice(greenhouseId);
+const humiditySensor = humiditySensorFactory.createDevice(
+  greenhouseId,
+  brokerUrl
+);
+const temperatureSensor = temperatureSensorFactory.createDevice(
+  greenhouseId,
+  brokerUrl
+);
+const waterLevelSensor = waterLevelSensorFactory.createDevice(
+  greenhouseId,
+  brokerUrl
+);
+
+const lightSensor = lightSensorFactory.createDevice(
+  greenhouseId, 
+  brokerUrl
+);
 
 // Crear instancias de sensores
-const sprinklerActuator = sprinklerActuatorFactory.createDevice(greenhouseId);
-const notificationActuator = notificationActuatorFactory.createDevice(greenhouseId);
-const waterPumpActuator = waterPumpActuatorFactory.createDevice(greenhouseId);
-const lightActuator = lightActuatorFactory.createDevice(greenhouseId);
+const sprinklerActuator = sprinklerActuatorFactory.createDevice(
+  greenhouseId,
+  brokerUrl
+);
+const notificationActuator = notificationActuatorFactory.createDevice(
+  greenhouseId,
+  brokerUrl
+);
+const waterPumpActuator = waterPumpActuatorFactory.createDevice(
+  greenhouseId,
+  brokerUrl
+);
+const lightActuator = lightActuatorFactory.createDevice(
+  greenhouseId,
+  brokerUrl
+);
 
 /**
  * Programa la publicación de datos de un sensor a intervalos fijos.

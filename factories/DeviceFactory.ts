@@ -1,5 +1,5 @@
 import { Device } from "../core/device/Device";
 
 export interface DeviceFactory<T extends Device> {
-    createDevice(greenhouseId: string): T;
+    createDevice(greenhouseId: string, brokerUrl: string): T;
 }
