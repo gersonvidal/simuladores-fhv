@@ -23,6 +23,7 @@ export class MqttClientImplementation implements IMqttClient {
     }
 
     publish(topic: string, message: string): void {
+        
         this.client.publish(topic, message, (error?: Error) => {
             if (error) {
                 console.error(`Error publicando en ${topic}:`, error);
@@ -31,8 +32,9 @@ export class MqttClientImplementation implements IMqttClient {
             }
         });
     }
-
+    
     subscribe(topic: string, callback: (message: string) => void): void {
+        console.log(topic);
         this.client.subscribe(topic, (error: Error | null) => {
             if (error) {
                 console.error(`Error suscribiéndose a ${topic}:`, error);
@@ -60,4 +62,5 @@ export class MqttClientImplementation implements IMqttClient {
     setActuatorState(topic: string, state: boolean): void {
         this.actuatorsState[topic] = state;
     }
+
 }

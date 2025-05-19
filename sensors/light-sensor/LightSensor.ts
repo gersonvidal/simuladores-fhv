@@ -12,9 +12,13 @@ export class LightSensor extends Sensor {
   readAndPublishData(): void {
     // Si el actuador de luz está encendido, la luminosidad aumenta
     if (this.isActuatorActive("light")) {
-      this.luminosity = Math.min(1000, this.luminosity + 50);
+      if (this.luminosity < 800) {
+        this.luminosity += 50;
+      } else {
+        this.luminosity += Math.random() * 10 - 5; // Oscila suavemente
+      }
     } else {
-      this.luminosity = Math.max(0, this.luminosity - Math.random() * 20);
+      this.luminosity = Math.max(0, this.luminosity - Math.random() * 15);
     }
 
     console.log(`💡 Luminosidad: ${this.luminosity.toFixed(2)} lux`);
