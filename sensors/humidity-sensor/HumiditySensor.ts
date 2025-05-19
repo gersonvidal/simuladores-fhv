@@ -11,9 +11,15 @@ export class HumiditySensor extends Sensor {
   readAndPublishData(): void {
     // Si el aspersor está activado, la humedad sube gradualmente
     if (this.isActuatorActive("sprinkler")) {
-      this.humidity = Math.min(90, this.humidity + 1.5);
+      // Subida realista y oscilación en zona óptima (70-85%)
+      if (this.humidity < 75) {
+        this.humidity += 1.5;
+      } else if (this.humidity < 85) {
+        this.humidity += Math.random() * 0.5 - 0.25; // fluctúa ligeramente
+      }
     } else {
-      this.humidity = Math.max(65, this.humidity - Math.random());
+      // Baja constante y realista
+      this.humidity = Math.max(40, this.humidity - Math.random() * 0.5);
     }
 
     console.log(`🚿 Humedad medida: ${this.humidity.toFixed(2)}%`);

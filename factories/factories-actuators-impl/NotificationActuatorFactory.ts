@@ -7,7 +7,10 @@ import { MqttClientImplementation } from "../../core/mqtt/MqttClientImplementati
 
 export class NotificationActuatorFactory implements DeviceFactory<Actuator> {
   createDevice(greenhouseId: string, brokerUrl: string): Actuator {
+    console.log(brokerUrl);
+    
     const mqttClient: IMqttClient = new MqttClientImplementation(brokerUrl);
+    
 
     return new NotificationActuator(mqttClient, greenhouseId);
   }

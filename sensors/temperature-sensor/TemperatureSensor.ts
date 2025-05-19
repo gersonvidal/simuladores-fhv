@@ -9,11 +9,20 @@ export class TemperatureSensor extends Sensor {
   }
 
   readAndPublishData(): void {
-    // Si el aspersor está activado, la temperatura baja poco a poco
-    if (this.isActuatorActive("sprinkler")) {
+
+    const lightOn = this.isActuatorActive("light");
+    const sprinklerOn = this.isActuatorActive("sprinkler");
+    
+    if (sprinklerOn) {
       this.temperature = Math.max(22, this.temperature - 0.5);
+    } else if (lightOn) {
+      if (this.temperature < 30) {
+        this.temperature += 0.5;
+      } else {
+        this.temperature += Math.random() * 0.3 - 0.15; // leve variación
+      }
     } else {
-      this.temperature = Math.min(36, this.temperature + Math.random());
+      this.temperature = Math.max(22, this.temperature - Math.random() * 0.2);
     }
 
     console.log(`☀️ Temperatura medida: ${this.temperature.toFixed(2)}°C`);

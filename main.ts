@@ -10,10 +10,36 @@ import { LightActuatorFactory } from "./factories/factories-actuators-impl/Light
 
 import { Logs } from "./src/utils/Logs.js";
 
+import mqtt from "mqtt";
+
+
+
 // Instancias base
 const logger = new Logs();
-const greenhouseId = "greenhouse-1";
+const greenhouseId = "greenhouse-2";
 const brokerUrl = "mqtt://localhost:1883";
+const topic = 'greenhouse/greenhouse-2/actuator/notification';
+
+const client = mqtt.connect(brokerUrl);
+
+client.on('connect', () =>{
+    console.log('CONECTADO AL BROKER MQTT: ${brokerUrl}');
+      client.subscribe(topic, (err) =>{
+       if (err){
+          console.error(' XXXX Error al suscribirse: ', err)
+       }else{
+          console.log('SUSCRITO AL TÓPICO :DDDDDDDDDDD: ${topic}');
+      }
+  });
+});
+
+client.on('message', (topic, message) => {
+  console.log(' !!!!!!! Mensaje RECIBIDO en ${topic}: ${message.toString()}');
+});
+
+client.on('error', (err) =>{
+  console.error('XXXXXX Error del cliente:', err);
+})
 
 // Crear fábricas de sensores
 const humiditySensorFactory = new HumiditySensorFactory();
@@ -24,6 +50,7 @@ const lightSensorFactory = new LightSensorFactory();
 // Crear fábricas de actuadores
 const sprinklerActuatorFactory = new SprinklerActuatorFactory();
 const notificationActuatorFactory = new NotificationActuatorFactory();
+
 const waterPumpActuatorFactory = new WaterPumpActuatorFactory();
 const lightActuatorFactory = new LightActuatorFactory();
 
@@ -55,6 +82,7 @@ const notificationActuator = notificationActuatorFactory.createDevice(
   greenhouseId,
   brokerUrl
 );
+console.log("SE CREO NOTIFICACIONES");
 const waterPumpActuator = waterPumpActuatorFactory.createDevice(
   greenhouseId,
   brokerUrl

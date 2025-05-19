@@ -11,7 +11,11 @@ export class WaterLevelSensor extends Sensor {
   readAndPublishData(): void {
     // Si la bomba de agua está activada, el nivel de agua sube gradualmente
     if (this.isActuatorActive("waterPump")) {
-      this.waterLevel = Math.min(100, this.waterLevel + 2);
+      if (this.waterLevel < 90) {
+        this.waterLevel += 2;
+      } else {
+        this.waterLevel += Math.random() * 0.5 - 0.25;
+      }
     } else {
       this.waterLevel = Math.max(0, this.waterLevel - Math.random());
     }
