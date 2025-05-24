@@ -3,10 +3,16 @@ import { Actuator } from "../Actuator.js";
 import { IMqttClient } from "../../core/mqtt/IMqttClient.js";
 
 export class LightActuator extends Actuator {
-  private lastCommand: string | null = null;
+  private lastCommand: string = "OFF";
 
   constructor(mqttClient: IMqttClient, greenhouseId: string) {
     super(mqttClient, greenhouseId, "light", "light"); // "light" es el tipo de actuador y el otro "light" es el tipo del sensor
+
+    this.mqttClient.publish(
+      `${this.getTopic()}/status`,
+      JSON.stringify({ state: "OFF" }),
+      { retain: true }
+    );
   }
 
   protected handleSensorData(message: string): void {
@@ -37,6 +43,11 @@ export class LightActuator extends Actuator {
     console.log(
       `💡 Lámpara ${command === "ON" ? "encendida 🟢" : "apagada 🔴"}`
     );
-    this.mqttClient.publish(this.getTopic(), command); // Publica el comando
+
+    this.mqttClient.publish(
+      `${this.getTopic()}/status`,
+      JSON.stringify({ state: command }),
+      { retain: true }
+    );
   }
 }

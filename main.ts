@@ -15,38 +15,13 @@ const logger = new Logs();
 const greenhouseId = "greenhouse-1";
 const brokerUrl = "mqtt://localhost:1883";
 
-// Crear fábricas de sensores
-const humiditySensorFactory = new HumiditySensorFactory();
-const temperatureSensorFactory = new TemperatureSensorFactory();
-const waterLevelSensorFactory = new WaterLevelSensorFactory();
-const lightSensorFactory = new LightSensorFactory();
-
 // Crear fábricas de actuadores
 const sprinklerActuatorFactory = new SprinklerActuatorFactory();
 const notificationActuatorFactory = new NotificationActuatorFactory();
 const waterPumpActuatorFactory = new WaterPumpActuatorFactory();
 const lightActuatorFactory = new LightActuatorFactory();
 
-// Crear instancias de sensores
-const humiditySensor = humiditySensorFactory.createDevice(
-  greenhouseId,
-  brokerUrl
-);
-const temperatureSensor = temperatureSensorFactory.createDevice(
-  greenhouseId,
-  brokerUrl
-);
-const waterLevelSensor = waterLevelSensorFactory.createDevice(
-  greenhouseId,
-  brokerUrl
-);
-
-const lightSensor = lightSensorFactory.createDevice(
-  greenhouseId, 
-  brokerUrl
-);
-
-// Crear instancias de sensores
+// Crear instancias de actuadores
 const sprinklerActuator = sprinklerActuatorFactory.createDevice(
   greenhouseId,
   brokerUrl
@@ -63,6 +38,28 @@ const lightActuator = lightActuatorFactory.createDevice(
   greenhouseId,
   brokerUrl
 );
+
+// Crear fábricas de sensores
+const humiditySensorFactory = new HumiditySensorFactory();
+const temperatureSensorFactory = new TemperatureSensorFactory();
+const waterLevelSensorFactory = new WaterLevelSensorFactory();
+const lightSensorFactory = new LightSensorFactory();
+
+// Crear instancias de sensores
+const humiditySensor = humiditySensorFactory.createDevice(
+  greenhouseId,
+  brokerUrl
+);
+const temperatureSensor = temperatureSensorFactory.createDevice(
+  greenhouseId,
+  brokerUrl
+);
+const waterLevelSensor = waterLevelSensorFactory.createDevice(
+  greenhouseId,
+  brokerUrl
+);
+
+const lightSensor = lightSensorFactory.createDevice(greenhouseId, brokerUrl);
 
 /**
  * Programa la publicación de datos de un sensor a intervalos fijos.

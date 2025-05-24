@@ -19,5 +19,5 @@
   },
   "include": ["src/**/*", "main.ts", "interfaces/**/*", "actuators/**/*", "sensors/**/*",
               "factories/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "**/__tests__/**", "**/*.spec.ts"]
 }

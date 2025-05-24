@@ -17,9 +17,21 @@ export abstract class Sensor extends Device {
 
   readAndPublishData(): void {}
 
-  protected isActuatorActive(actuatorType: string): boolean {
-    return this.mqttClient.isActuatorOn(
-      `greenhouse/${this.greenhouseId}/actuator/${actuatorType}`
-    );
+  protected subscribeToActuatorState(
+    actuatorType: string,
+    callback: (state: string) => void
+  ): void {
+    const topic = `greenhouse/${this.greenhouseId}/actuator/${actuatorType}/status`;
+    
+    this.mqttClient.subscribe(topic, (message: string) => {
+      try {
+        const parsed = JSON.parse(message);
+        if (parsed.state === "ON" || parsed.state === "OFF") {
+          callback(parsed.state);
+        }
+      } catch (err) {
+        console.error(`❌ Error procesando estado del actuador (${actuatorType}):`, err);
+      }
+    });
   }
 }
