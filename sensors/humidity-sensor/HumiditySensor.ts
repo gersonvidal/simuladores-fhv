@@ -3,23 +3,23 @@ import { IMqttClient } from "../../core/mqtt/IMqttClient"; // Usa la interfaz de
 
 export class HumiditySensor extends Sensor {
   private humidity: number = Math.random() * (90 - 65) + 65; // Estado interno
+  private sprinklerActive: boolean = false;
 
   constructor(mqttClient: IMqttClient, greenhouseId: string) {
     super(mqttClient, greenhouseId, "humidity");
+    
+    this.subscribeToActuatorState("sprinkler", (state) => {
+      this.sprinklerActive = state === "ON";
+      console.log(`🛰️ Estado recibido del aspersor: ${state}`);
+    });
   }
 
   readAndPublishData(): void {
     // Si el aspersor está activado, la humedad sube gradualmente
-    if (this.isActuatorActive("sprinkler")) {
-      // Subida realista y oscilación en zona óptima (70-85%)
-      if (this.humidity < 75) {
-        this.humidity += 1.5;
-      } else if (this.humidity < 85) {
-        this.humidity += Math.random() * 0.5 - 0.25; // fluctúa ligeramente
-      }
+    if (this.sprinklerActive) {
+      this.humidity = Math.min(90, this.humidity + 1.5);
     } else {
-      // Baja constante y realista
-      this.humidity = Math.max(40, this.humidity - Math.random() * 0.5);
+      this.humidity = Math.max(65, this.humidity - Math.random());
     }
 
     console.log(`🚿 Humedad medida: ${this.humidity.toFixed(2)}%`);

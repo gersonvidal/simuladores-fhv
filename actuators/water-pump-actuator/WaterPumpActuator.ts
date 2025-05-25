@@ -3,11 +3,16 @@ import { Actuator } from "../Actuator.js";
 import { IMqttClient } from "../../core/mqtt/IMqttClient";
 
 export class WaterPumpActuator extends Actuator {
-  private lastCommand: string | null = null;
+  private lastCommand: string = "OFF";
 
   constructor(mqttClient: IMqttClient, greenhouseId: string) {
-    // Llama a super() para inicializar la clase base
     super(mqttClient, greenhouseId, "waterPump", "water_level");
+
+    this.mqttClient.publish(
+      `${this.getTopic()}/status`,
+      JSON.stringify({ state: "OFF" }),
+      { retain: true }
+    );
   }
 
   protected handleSensorData(message: string): void {
@@ -37,6 +42,11 @@ export class WaterPumpActuator extends Actuator {
     console.log(
       `💧 Bomba de agua ${command === "ON" ? "activada 🟢" : "desactivada 🔴"}`
     );
-    this.mqttClient.publish(this.getTopic(), command); // Publica el comando
+
+    this.mqttClient.publish(
+      `${this.getTopic()}/status`,
+      JSON.stringify({ state: command }),
+      { retain: true }
+    );
   }
 }

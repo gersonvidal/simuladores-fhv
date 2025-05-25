@@ -2,10 +2,16 @@ import { Actuator } from "../Actuator.js";
 import { IMqttClient } from "../../core/mqtt/IMqttClient";
 
 export class SprinklerActuator extends Actuator {
-  private lastCommand: string | null = null;
+  private lastCommand: string = "OFF";
 
   constructor(mqttClient: IMqttClient, greenhouseId: string) {
     super(mqttClient, greenhouseId, "sprinkler", "humidity");
+
+    this.mqttClient.publish(
+      `${this.getTopic()}/status`,
+      JSON.stringify({ state: "OFF" }),
+      { retain: true }
+    );
   }
 
   protected handleSensorData(message: string): void {
@@ -35,6 +41,11 @@ export class SprinklerActuator extends Actuator {
     console.log(
       `🚿 Aspersor ${command === "ON" ? "activado 🟢" : "desactivado 🔴"}`
     );
-    this.mqttClient.publish(this.getTopic(), command); // Publica el comando
+
+    this.mqttClient.publish(
+      `${this.getTopic()}/status`,
+      JSON.stringify({ state: command }),
+      { retain: true }
+    );
   }
 }
