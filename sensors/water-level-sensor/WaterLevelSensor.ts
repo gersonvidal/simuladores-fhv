@@ -10,7 +10,7 @@ export class WaterLevelSensor extends Sensor {
 
     this.subscribeToActuatorState("waterPump", (state) => {
       this.waterPumpActive = state === "ON";
-      console.log(`🛰️ Estado recibido del aspersor: ${state}`);
+      console.log(`🛰️ Estado recibido de la bomba de agua: ${state}`);
     });
   }
 

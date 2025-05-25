@@ -35,13 +35,6 @@ export class NotificationActuator extends Actuator {
   }
 
   executeAction(command: string): void {
-    /*    if (!this.mqttClient.isActuatorOn(this.getTopic())) {
-      console.log(
-        "📴 Notificación no enviada: El Actuador de Notificaciones está desactivado"
-      );
-      return;
-    } */
-
     if (command === this.lastCommand) return; // 👈 Evita spam si el estado no cambió
 
     this.lastCommand = command;

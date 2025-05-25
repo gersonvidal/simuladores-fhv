@@ -10,7 +10,7 @@ export class LightSensor extends Sensor {
 
     this.subscribeToActuatorState("light", (state) => {
       this.lightActive = state === "ON";
-      console.log(`🛰️ Estado recibido del aspersor: ${state}`);
+      console.log(`🛰️ Estado recibido de la lámpara: ${state}`);
     });
   }
 
