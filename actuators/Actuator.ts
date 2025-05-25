@@ -60,9 +60,16 @@ export abstract class Actuator extends Device {
             }`
           );
 
+          let extendedMode = "MANUAL";
+          if (data.command === "ON") {
+            extendedMode = "MANUAL_ON";
+          } else if (data.command === "OFF") {
+            extendedMode = "MANUAL_OFF";
+          }
+
           this.mqttClient.publish(
             `${this.getTopic()}/mode`,
-            JSON.stringify({ mode: this.mode }),
+            JSON.stringify({ mode: extendedMode }),
             { retain: true }
           );
 
