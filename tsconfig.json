@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "ESNext",
+    "outDir": "./dist",
+    "rootDir": "./",
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@actuators/*": ["actuators/*"],
+      "@factories/*": ["factories/*"],
+      "@sensors/*": ["sensors/*"]
+    }
+  },
+  "include": ["src/**/*", "main.ts", "interfaces/**/*", "actuators/**/*", "sensors/**/*",
+              "factories/**/*"],
+  "exclude": ["node_modules", "**/__tests__/**", "**/*.spec.ts"]
+}
