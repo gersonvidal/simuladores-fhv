@@ -3,21 +3,21 @@ import { IMqttClient } from "../../core/mqtt/IMqttClient.js"; // Usa la interfaz
 
 export class TemperatureSensor extends Sensor {
   private temperature: number = Math.random() * (36 - 22) + 22;
-  private sprinklerActive: boolean = false;
+  private fanActive: boolean = false;
 
   constructor(mqttClient: IMqttClient, greenhouseId: string) {
     super(mqttClient, greenhouseId, "temperature");
 
-    this.subscribeToActuatorState("sprinkler", (state) => {
-      this.sprinklerActive = state === "ON";
-      console.log(`🛰️ Estado recibido del aspersor: ${state}`);
+    this.subscribeToActuatorState("fan", (state) => {
+      this.fanActive = state === "ON";
+      console.log(`🛰️ Estado recibido del ventilador: ${state}`);
     });
   }
 
   readAndPublishData(): void {
-    // Si el aspersor está activado, la temperatura baja poco a poco
-    if (this.sprinklerActive) {
-      this.temperature = Math.max(22, this.temperature - 0.5);
+    // Si el ventilador está activado, la temperatura baja
+    if (this.fanActive) {
+      this.temperature = Math.max(22, this.temperature - 6);
     } else {
       this.temperature = Math.min(36, this.temperature + Math.random());
     }
