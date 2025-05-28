@@ -7,6 +7,7 @@ import { SprinklerActuatorFactory } from "./factories/factories-actuators-impl/S
 import { NotificationActuatorFactory } from "./factories/factories-actuators-impl/NotificationActuatorFactory.js";
 import { WaterPumpActuatorFactory } from "./factories/factories-actuators-impl/WaterPumpActuatorFactory.js";
 import { LightActuatorFactory } from "./factories/factories-actuators-impl/LightActuatorFactory.js";
+import { FanActuatorFactory } from "@factories/factories-actuators-impl/FanActuatorFactory.js";
 
 import { Logs } from "./src/utils/Logs.js";
 
@@ -20,6 +21,7 @@ const sprinklerActuatorFactory = new SprinklerActuatorFactory();
 const notificationActuatorFactory = new NotificationActuatorFactory();
 const waterPumpActuatorFactory = new WaterPumpActuatorFactory();
 const lightActuatorFactory = new LightActuatorFactory();
+const fanActuatorFactory = new FanActuatorFactory();
 
 // Crear instancias de actuadores
 const sprinklerActuator = sprinklerActuatorFactory.createDevice(
@@ -35,6 +37,11 @@ const waterPumpActuator = waterPumpActuatorFactory.createDevice(
   brokerUrl
 );
 const lightActuator = lightActuatorFactory.createDevice(
+  greenhouseId,
+  brokerUrl
+);
+
+const fanActuator = fanActuatorFactory.createDevice(
   greenhouseId,
   brokerUrl
 );
@@ -59,7 +66,10 @@ const waterLevelSensor = waterLevelSensorFactory.createDevice(
   brokerUrl
 );
 
-const lightSensor = lightSensorFactory.createDevice(greenhouseId, brokerUrl);
+const lightSensor = lightSensorFactory.createDevice(
+  greenhouseId, 
+  brokerUrl
+);
 
 /**
  * Programa la publicación de datos de un sensor a intervalos fijos.
