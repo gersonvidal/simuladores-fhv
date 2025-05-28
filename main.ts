@@ -7,7 +7,7 @@ import { SprinklerActuatorFactory } from "./factories/factories-actuators-impl/S
 import { NotificationActuatorFactory } from "./factories/factories-actuators-impl/NotificationActuatorFactory.js";
 import { WaterPumpActuatorFactory } from "./factories/factories-actuators-impl/WaterPumpActuatorFactory.js";
 import { LightActuatorFactory } from "./factories/factories-actuators-impl/LightActuatorFactory.js";
-import { FanActuatorFactory } from "@factories/factories-actuators-impl/FanActuatorFactory.js";
+import { FanActuatorFactory } from "./factories/factories-actuators-impl/FanActuatorFactory.js";
 
 import { Logs } from "./src/utils/Logs.js";
 
