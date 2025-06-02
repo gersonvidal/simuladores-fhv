@@ -41,10 +41,7 @@ const lightActuator = lightActuatorFactory.createDevice(
   brokerUrl
 );
 
-const fanActuator = fanActuatorFactory.createDevice(
-  greenhouseId,
-  brokerUrl
-);
+const fanActuator = fanActuatorFactory.createDevice(greenhouseId, brokerUrl);
 
 // Crear fábricas de sensores
 const humiditySensorFactory = new HumiditySensorFactory();
@@ -66,10 +63,7 @@ const waterLevelSensor = waterLevelSensorFactory.createDevice(
   brokerUrl
 );
 
-const lightSensor = lightSensorFactory.createDevice(
-  greenhouseId, 
-  brokerUrl
-);
+const lightSensor = lightSensorFactory.createDevice(greenhouseId, brokerUrl);
 
 /**
  * Programa la publicación de datos de un sensor a intervalos fijos.
