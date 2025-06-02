@@ -4,9 +4,18 @@ import { IMqttClient } from "../../core/mqtt/IMqttClient";
 
 export class NotificationActuator extends Actuator {
   private lastCommand: string | null = null;
+  private SENSOR_INFO: Record<string, { label: string; unit: string }> = {
+    humidity: { label: "humedad", unit: "%" },
+    light: { label: "luminosidad", unit: " lux" },
+    water_level: { label: "nivel de agua", unit: "%" },
+  };
 
   constructor(mqttClient: IMqttClient, greenhouseId: string) {
     super(mqttClient, greenhouseId, "notification", "temperature");
+
+    this.subscribeToAdditionalSensor("humidity", (val) => val < 70);
+    this.subscribeToAdditionalSensor("light", (val) => val < 300);
+    this.subscribeToAdditionalSensor("water_level", (val) => val < 30);
 
     this.mqttClient.publish(
       `${this.getTopic()}/status`,
@@ -42,5 +51,45 @@ export class NotificationActuator extends Actuator {
     console.log(`☀️📡 Notificación enviada: ${command}`);
 
     this.mqttClient.publish(this.getTopic(), command);
+  }
+
+  private subscribeToAdditionalSensor(
+    sensorType: string,
+    thresholdFunction: (value: number) => boolean
+  ): void {
+    const topic = `greenhouse/${this.greenhouseId}/sensor/${sensorType}`;
+
+    this.mqttClient.subscribe(topic, (message: string) => {
+      if (this.mode !== "AUTO") return;
+
+      try {
+        const data = JSON.parse(message);
+        const value = parseFloat(data.value);
+        if (isNaN(value)) {
+          console.error(`Valor inválido recibido de ${sensorType}:`, message);
+          return;
+        }
+
+        if (thresholdFunction(value)) {
+          const { label, unit } = this.SENSOR_INFO[sensorType] || {
+            label: sensorType,
+            unit: "",
+          };
+
+          const alert = `Alerta de ${label}: ${value}${unit}`;
+          this.executeAction(alert);
+        } else {
+          const { label, unit } = this.SENSOR_INFO[sensorType] || {
+            label: sensorType,
+            unit: "",
+          };
+          console.log(`${label} normal: ${value}${unit}`);
+        }
+      } catch (error) {
+        console.error(`Error procesando ${sensorType}:`, error);
+      }
+    });
+
+    console.log(`📡 Suscrito a sensor adicional: ${sensorType}`);
   }
 }
